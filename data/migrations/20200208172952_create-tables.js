@@ -12,12 +12,6 @@ exports.up = function(knex) {
   	.createTable('ingredients', tbl => {
   		tbl.increments();
   		tbl.string('ingredient_name', 128).notNullable();
-  		tbl.integer('unit_id')
-  			.notNullable()
-  			.unsigned()
-  			.references('units.id')
-  			.onDelete('CASCADE')
-  			.onUpdate('CASCADE');
   	})
   	.createTable("recipe_ingredients", tbl => {
   		tbl.integer('recipe_id')
@@ -32,7 +26,13 @@ exports.up = function(knex) {
   			.references('ingredients.id')
   			.onDelete('CASCADE')
   			.onUpdate('CASCADE');
-  		tbl.integer('quantity').notNullable();
+  		tbl.integer('unit_id')
+  			.notNullable()
+  			.unsigned()
+  			.references('units.id')
+  			.onDelete('CASCADE')
+  			.onUpdate('CASCADE');
+  		tbl.float('quantity').notNullable();
   		tbl.primary(['recipe_id', 'ingredient_id']);
   	})
   	.createTable('steps', tbl => {
